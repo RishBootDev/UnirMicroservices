@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: UserService
+          uri: lb://UserService
+          predicates:
+            - Path=/api/unir/users/**
+          filters:
+            - StripPrefix=2
+
+        - id: PostService
+          uri: lb://PostService
+          predicates:
+            - Path=/api/unir/posts/**
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
+
+        - id: ConnectionsService
+          uri: lb://ConnectionsService
+          predicates:
+            - Path=/api/unir/connections/**
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter

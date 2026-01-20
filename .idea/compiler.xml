@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="EurekaServiceDiscovery" />
+        <module name="UnirApiGateway" />
       </profile>
       <profile name="Annotation profile for UserService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -26,6 +27,7 @@
       <module name="EurekaServiceDiscovery" options="-parameters" />
       <module name="NotificationService" options="-parameters" />
       <module name="PostService" options="-parameters" />
+      <module name="UnirApiGateway" options="-parameters" />
       <module name="UserService" options="-parameters" />
     </option>
   </component>
