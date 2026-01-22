@@ -13,6 +13,7 @@
         <option value="$PROJECT_DIR$/ConnectionService/pom.xml" />
         <option value="$PROJECT_DIR$/ConnectionService/ProfileService/pom.xml" />
         <option value="$PROJECT_DIR$/ProfileService/pom.xml" />
+        <option value="$PROJECT_DIR$/SubscriptionService/pom.xml" />
       </list>
     </option>
   </component>
