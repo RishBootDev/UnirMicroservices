@@ -1,6 +1,7 @@
 package com.rishbootdev.profileservice.entity;
 
 
+import com.rishbootdev.profileservice.enums.ProficiencyLevel;
 import jakarta.persistence.*;
 import lombok.*;
 
