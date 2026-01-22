@@ -20,7 +20,7 @@
         </processorPath>
         <module name="UserService" />
       </profile>
-      <profile name="Annotation profile for ProfileService" enabled="true">
+      <profile name="Annotation profile for SubscriptionService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -30,6 +30,7 @@
         <module name="ConnectionService" />
         <module name="NotificationService" />
         <module name="ProfileService" />
+        <module name="SubscriptionService" />
         <module name="PostService" />
       </profile>
     </annotationProcessing>
@@ -41,6 +42,7 @@
       <module name="NotificationService" options="-parameters" />
       <module name="PostService" options="-parameters" />
       <module name="ProfileService" options="-parameters" />
+      <module name="SubscriptionService" options="-parameters" />
       <module name="UnirApiGateway" options="-parameters" />
       <module name="UserService" options="-parameters" />
     </option>
