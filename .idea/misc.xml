@@ -11,6 +11,8 @@
         <option value="$PROJECT_DIR$/UnirApiGateway/pom.xml" />
         <option value="$PROJECT_DIR$/UserService/ConnectionService/pom.xml" />
         <option value="$PROJECT_DIR$/ConnectionService/pom.xml" />
+        <option value="$PROJECT_DIR$/ConnectionService/ProfileService/pom.xml" />
+        <option value="$PROJECT_DIR$/ProfileService/pom.xml" />
       </list>
     </option>
   </component>
