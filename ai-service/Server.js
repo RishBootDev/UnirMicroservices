@@ -9,6 +9,7 @@ const httpserver=require('http').createServer(app);
     httpserver.listen(process.env.PORT,()=>{
         console.log("Connected");
       });
+<<<<<<< HEAD
 
       const { Eureka } = require("eureka-js-client");
       
@@ -63,6 +64,8 @@ const httpserver=require('http').createServer(app);
           server.close(() => process.exit());
         });
       });
+=======
+>>>>>>> 306267745ef0bdcfc64b03d699920e34b1e82c37
   
   
 
