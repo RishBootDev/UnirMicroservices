@@ -8,7 +8,7 @@ const TopPost = tool(
     const token = config.metadata.token;
 
     const response = await axios.get(
-      `dummyapi.io/data/api/user?limit=5&${field}=true`,
+      `http://localhost:2030/post/postByField/:field`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -16,7 +16,7 @@ const TopPost = tool(
       }
     );
 
-    return JSON.stringify(response.data);
+    return JSON.stringify(response);
   },
   {
     name: "TopPost",
