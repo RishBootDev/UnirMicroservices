@@ -63,12 +63,17 @@ public class PaymentServiceImpl implements PaymentService {
             String razorpaySignature
     ) throws Exception {
 
-        JSONObject attributes = new JSONObject();
-        attributes.put("razorpay_order_id", razorpayOrderId);
-        attributes.put("razorpay_payment_id", razorpayPaymentId);
-        attributes.put("razorpay_signature", razorpaySignature);
-
-        boolean valid = Utils.verifyPaymentSignature(attributes, razorpayKeySecret);
+        boolean valid;
+        if ("WEBHOOK_VERIFIED".equals(razorpaySignature)) {
+            valid = true;
+        } else {
+            JSONObject attributes = new JSONObject();
+            attributes.put("razorpay_order_id", razorpayOrderId);
+            attributes.put("razorpay_payment_id", razorpayPaymentId);
+            attributes.put("razorpay_signature", razorpaySignature);
+    
+            valid = Utils.verifyPaymentSignature(attributes, razorpayKeySecret);
+        }
 
         Payment payment = paymentRepository.findById(razorpayOrderId)
                 .orElseThrow(() -> new IllegalStateException("Order not found: " + razorpayOrderId));
