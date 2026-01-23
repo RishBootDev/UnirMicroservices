@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar/Navbar";
 import { useAuth } from "@/context/useAuth";
 import { Camera, Pencil } from "lucide-react";
+import { SubscriptionCard } from "@/components/Subscription/SubscriptionCard";
 
 export default function ProfilePage() {
   const { user } = useAuth();
@@ -74,6 +75,8 @@ export default function ProfilePage() {
                   Passionate software engineer with 5+ years of experience building scalable web applications.
                 </p>
               </div>
+
+              <SubscriptionCard />
 
               <div className="unir-card mt-2 p-6">
                 <h2 className="text-xl font-semibold text-[rgba(0,0,0,0.9)] mb-4">Experience</h2>
