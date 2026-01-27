@@ -37,4 +37,10 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+
+    // field pe post time ke basis pe sort
+    @GetMapping("/postByField/{field}")
+    public ResponseEntity<?> top10PostByField(@PathVariable String field){
+        return ResponseEntity.ok(postsService.getPostsByField(field));
+    }
 }

@@ -24,3 +24,13 @@ spring:
           filters:
             - StripPrefix=2
             - name: AuthenticationFilter
+
+        - id: NODE-SERVICE
+          uri: lb://NODE-SERVICE
+          predicates:
+            - Path=/api/unir/ai-service/api/chat/**
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
+
+

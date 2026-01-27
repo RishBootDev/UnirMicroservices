@@ -62,4 +62,8 @@ public class PostsService {
                 .map((element) -> modelMapper.map(element, PostDto.class))
                 .collect(Collectors.toList());
     }
+
+    public List<Post> getPostsByField(String field){
+        return postsRepository.getPostsBy(field);
+    }
 }
