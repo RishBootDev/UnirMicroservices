@@ -2,6 +2,7 @@ package com.rishbootdev.profileservice.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -16,12 +17,18 @@ public class ContactInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String email;
+    @NotNull
     private String phone;
     private String website;
     private String github;
     private String stackOverflow;
     private String twitter;
     private String linkedin;
+
+   // private Person person;  // Bidirectional
+
+
 }
 

@@ -63,7 +63,6 @@ public class PersonService {
         educationRepository.deleteById(educationId);
     }
 
-    /* ================= PROJECT ================= */
 
     public Project addProject(Long id, Project project) {
         Person person = getProfile(id);
@@ -75,8 +74,6 @@ public class PersonService {
         projectRepository.deleteById(projectId);
     }
 
-    /* ================= SKILL ================= */
-
     public Skill addSkill(Long id, Skill skill) {
         Person person = getProfile(id);
         skill.setPerson(person);
@@ -87,7 +84,6 @@ public class PersonService {
         skillRepository.deleteById(skillId);
     }
 
-    /* ================= CERTIFICATION ================= */
 
     public Certification addCertification(Long id, Certification certification) {
         Person person = getProfile(id);
@@ -99,7 +95,6 @@ public class PersonService {
         certificationRepository.deleteById(certificationId);
     }
 
-    /* ================= RECOMMENDATION ================= */
 
     public Recommendation addRecommendation(Long id, Recommendation recommendation) {
         Person person = getProfile(id);
@@ -110,8 +105,6 @@ public class PersonService {
     public void removeRecommendation(Long recommendationId) {
         recommendationRepository.deleteById(recommendationId);
     }
-
-    /* ================= LANGUAGES ================= */
 
     public List<Language> addLanguage(Long id, Language language) {
         Person person = getProfile(id);
@@ -126,7 +119,6 @@ public class PersonService {
         personRepository.save(person);
     }
 
-    /* ================= KEYWORDS ================= */
 
     public Set<String> addKeyword(Long id, String keyword) {
         Person person = getProfile(id);

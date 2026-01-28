@@ -4,6 +4,7 @@ package com.rishbootdev.profileservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.Year;
+import java.util.List;
 
 @Entity
 @Table(name = "educations")
@@ -27,7 +28,7 @@ public class Education {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToOne
-    private Person person;
+    @ManyToMany
+    private List<Person> persons;
 }
 
