@@ -2,15 +2,11 @@ package com.rishbootdev.profileservice.service;
 
 
 import com.rishbootdev.profileservice.dto.PersonDto;
-import com.rishbootdev.profileservice.dto.ProfileDto;
-import com.rishbootdev.profileservice.entity.Education;
 import com.rishbootdev.profileservice.entity.Person;
 import com.rishbootdev.profileservice.repository.EducationRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
