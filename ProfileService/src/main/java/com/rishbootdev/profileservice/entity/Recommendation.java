@@ -24,7 +24,5 @@ public class Recommendation {
     @Column(columnDefinition = "TEXT")
     private String text;
 
-    @ManyToOne
-    private Person person;
 }
 

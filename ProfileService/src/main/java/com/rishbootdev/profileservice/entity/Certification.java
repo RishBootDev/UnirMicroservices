@@ -23,7 +23,5 @@ public class Certification {
     private LocalDate date;
     private String credentialUrl;
 
-    @ManyToOne
-    private Person person;
 }
 

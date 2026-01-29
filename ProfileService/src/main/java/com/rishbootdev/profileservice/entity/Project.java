@@ -31,6 +31,4 @@ public class Project {
     @ElementCollection
     private Set<String> technologies;
 
-    @ManyToOne
-    private Person person;
 }

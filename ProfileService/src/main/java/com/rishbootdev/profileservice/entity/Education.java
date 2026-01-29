@@ -1,14 +1,14 @@
 package com.rishbootdev.profileservice.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.Year;
-import java.util.List;
 
 @Entity
 @Table(name = "educations")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -18,7 +18,14 @@ public class Education {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String institution;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "institution_id", nullable = false)
+    private Institution institution;
+
     private String degree;
     private String fieldOfStudy;
     private Year startYear;
@@ -27,8 +34,4 @@ public class Education {
 
     @Column(columnDefinition = "TEXT")
     private String description;
-
-    @ManyToMany
-    private List<Person> persons;
 }
-

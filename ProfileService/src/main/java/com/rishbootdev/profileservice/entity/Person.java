@@ -33,12 +33,20 @@ public class Person {
     @Column(columnDefinition = "TEXT")
     private String summary;
 
-
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "person",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<Experience> experiences = new ArrayList<>();
 
-    @ManyToMany
+    @OneToMany(
+            mappedBy = "person",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<Education> educations = new ArrayList<>();
+
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "person_id")
@@ -55,7 +63,6 @@ public class Person {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "person_id")
     private List<Recommendation> recommendations = new ArrayList<>();
-
 
     @ElementCollection
     private List<Language> languages = new ArrayList<>();

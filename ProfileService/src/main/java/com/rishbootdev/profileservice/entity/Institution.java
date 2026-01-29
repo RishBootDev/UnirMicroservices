@@ -1,27 +1,28 @@
 package com.rishbootdev.profileservice.entity;
 
-
-import com.rishbootdev.profileservice.enums.ProficiencyLevel;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "skills")
-@Data
+@Table(
+        name = "institutions",
+        indexes = @Index(name = "idx_institution_name", columnList = "name")
+)
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Skill {
+public class Institution {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String name;
-    private Integer endorsementCount;
 
-    @Enumerated(EnumType.STRING)
-    private ProficiencyLevel proficiency;
-
+    private String city;
+    private String country;
 }
 
