@@ -2,7 +2,7 @@ package com.rishbootdev.profileservice.controller;
 
 
 import com.rishbootdev.profileservice.dto.PersonDto;
-import com.rishbootdev.profileservice.service.EducationService;
+import com.rishbootdev.profileservice.service.ExperienceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/education")
+@RequestMapping("/api/company")
 @RequiredArgsConstructor
-public class EducationController {
+public class ExperienceController {
 
-    private final EducationService educationService;
+    private final ExperienceService experienceService;
 
-    @GetMapping("/getProfiles/{institute}")
-    public ResponseEntity<List<PersonDto>> getProfilesByEducation(@PathVariable String institute) {
-       return ResponseEntity.ok(educationService.byInstituteName(institute));
+    @GetMapping("/getProfiles/{name}")
+    public ResponseEntity<List<PersonDto>> getPersonsByCompany(@PathVariable String name){
+        return ResponseEntity.ok(experienceService.byCompanyName(name));
     }
 }

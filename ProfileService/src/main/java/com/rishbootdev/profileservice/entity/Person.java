@@ -60,10 +60,6 @@ public class Person {
     @JoinColumn(name = "person_id")
     private List<Certification> certifications = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "person_id")
-    private List<Recommendation> recommendations = new ArrayList<>();
-
     @ElementCollection
     private List<Language> languages = new ArrayList<>();
 

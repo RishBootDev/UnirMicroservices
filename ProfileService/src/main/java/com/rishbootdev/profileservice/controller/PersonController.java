@@ -16,38 +16,25 @@ public class PersonController {
 
     private final PersonService personService;
 
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Person> getProfile(@PathVariable Long id) {
-        return ResponseEntity.ok(personService.getProfile(id));
+    @GetMapping("")
+    public ResponseEntity<Person> getProfile() {
+        return ResponseEntity.ok(personService.getProfile());
     }
 
-
-    @PostMapping("/{id}/contact")
-    public ResponseEntity<ContactInfo> addOrUpdateContact(
-            @PathVariable Long id,
-            @RequestBody ContactInfo contactInfo) {
-
-        return ResponseEntity.ok(
-                personService.addOrUpdateContact(id, contactInfo)
-        );
+    @PostMapping("/contact")
+    public ResponseEntity<ContactInfo> addOrUpdateContact(@RequestBody ContactInfo contactInfo) {
+        return ResponseEntity.ok(personService.addOrUpdateContact(contactInfo));
     }
 
-    @DeleteMapping("/{id}/contact")
-    public ResponseEntity<Void> removeContact(@PathVariable Long id) {
-        personService.removeContact(id);
+    @DeleteMapping("/contact")
+    public ResponseEntity<Void> removeContact() {
+        personService.removeContact();
         return ResponseEntity.noContent().build();
     }
 
-
-    @PostMapping("/{id}/experience")
-    public ResponseEntity<Experience> addExperience(
-            @PathVariable Long id,
-            @RequestBody Experience experience) {
-
-        return ResponseEntity.ok(
-                personService.addExperience(id, experience)
-        );
+    @PostMapping("/experience")
+    public ResponseEntity<Experience> addExperience(@RequestBody Experience experience) {
+        return ResponseEntity.ok(personService.addExperience(experience));
     }
 
     @DeleteMapping("/experience/{experienceId}")
@@ -56,15 +43,9 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 
-
-    @PostMapping("/{id}/education")
-    public ResponseEntity<Education> addEducation(
-            @PathVariable Long id,
-            @RequestBody Education education) {
-
-        return ResponseEntity.ok(
-                personService.addEducation(id, education)
-        );
+    @PostMapping("/education")
+    public ResponseEntity<Education> addEducation(@RequestBody Education education) {
+        return ResponseEntity.ok(personService.addEducation(education));
     }
 
     @DeleteMapping("/education/{educationId}")
@@ -73,15 +54,9 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 
-
-    @PostMapping("/{id}/project")
-    public ResponseEntity<Project> addProject(
-            @PathVariable Long id,
-            @RequestBody Project project) {
-
-        return ResponseEntity.ok(
-                personService.addProject(id, project)
-        );
+    @PostMapping("/project")
+    public ResponseEntity<Project> addProject(@RequestBody Project project) {
+        return ResponseEntity.ok(personService.addProject(project));
     }
 
     @DeleteMapping("/project/{projectId}")
@@ -90,15 +65,9 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 
-
-    @PostMapping("/{id}/skill")
-    public ResponseEntity<Skill> addSkill(
-            @PathVariable Long id,
-            @RequestBody Skill skill) {
-
-        return ResponseEntity.ok(
-                personService.addSkill(id, skill)
-        );
+    @PostMapping("/skill")
+    public ResponseEntity<Skill> addSkill(@RequestBody Skill skill) {
+        return ResponseEntity.ok(personService.addSkill(skill));
     }
 
     @DeleteMapping("/skill/{skillId}")
@@ -107,15 +76,9 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 
-
-    @PostMapping("/{id}/certification")
-    public ResponseEntity<Certification> addCertification(
-            @PathVariable Long id,
-            @RequestBody Certification certification) {
-
-        return ResponseEntity.ok(
-                personService.addCertification(id, certification)
-        );
+    @PostMapping("/certification")
+    public ResponseEntity<Certification> addCertification(@RequestBody Certification certification) {
+        return ResponseEntity.ok(personService.addCertification(certification));
     }
 
     @DeleteMapping("/certification/{certificationId}")
@@ -124,59 +87,25 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 
-
-    @PostMapping("/{id}/recommendation")
-    public ResponseEntity<Recommendation> addRecommendation(
-            @PathVariable Long id,
-            @RequestBody Recommendation recommendation) {
-
-        return ResponseEntity.ok(
-                personService.addRecommendation(id, recommendation)
-        );
+    @PostMapping("/language")
+    public ResponseEntity<List<Language>> addLanguage(@RequestBody Language language) {
+        return ResponseEntity.ok(personService.addLanguage(language));
     }
 
-    @DeleteMapping("/recommendation/{recommendationId}")
-    public ResponseEntity<Void> removeRecommendation(@PathVariable Long recommendationId) {
-        personService.removeRecommendation(recommendationId);
+    @DeleteMapping("/language")
+    public ResponseEntity<Void> removeLanguage(@RequestBody Language language) {
+        personService.removeLanguage(language);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{id}/language")
-    public ResponseEntity<List<Language>> addLanguage(
-            @PathVariable Long id,
-            @RequestBody Language language) {
-
-        return ResponseEntity.ok(
-                personService.addLanguage(id, language)
-        );
+    @PostMapping("/keyword")
+    public ResponseEntity<Set<String>> addKeyword(@RequestBody String keyword) {
+        return ResponseEntity.ok(personService.addKeyword(keyword));
     }
 
-    @DeleteMapping("/{id}/language")
-    public ResponseEntity<Void> removeLanguage(
-            @PathVariable Long id,
-            @RequestBody Language language) {
-
-        personService.removeLanguage(id, language);
-        return ResponseEntity.noContent().build();
-    }
-
-
-    @PostMapping("/{id}/keyword")
-    public ResponseEntity<Set<String>> addKeyword(
-            @PathVariable Long id,
-            @RequestBody String keyword) {
-
-        return ResponseEntity.ok(
-                personService.addKeyword(id, keyword)
-        );
-    }
-
-    @DeleteMapping("/{id}/keyword")
-    public ResponseEntity<Void> removeKeyword(
-            @PathVariable Long id,
-            @RequestBody String keyword) {
-
-        personService.removeKeyword(id, keyword);
+    @DeleteMapping("/keyword")
+    public ResponseEntity<Void> removeKeyword(@RequestBody String keyword) {
+        personService.removeKeyword(keyword);
         return ResponseEntity.noContent().build();
     }
 }

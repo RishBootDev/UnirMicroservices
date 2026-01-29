@@ -1,5 +1,6 @@
 package com.rishbootdev.profileservice.service;
 
+import com.rishbootdev.profileservice.auth.UserContextHolder;
 import com.rishbootdev.profileservice.entity.*;
 import com.rishbootdev.profileservice.repository.*;
 import jakarta.transaction.Transactional;
@@ -17,33 +18,33 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final ExperienceRepository experienceRepository;
     private final EducationRepository educationRepository;
-    private final ProjectRepository projectRepository;
-    private final SkillRepository skillRepository;
-    private final CertificationRepository certificationRepository;
-    private final RecommendationRepository recommendationRepository;
 
-
-    public Person getProfile(Long id) {
-        return personRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Person not found"));
+    private Person getCurrentPerson() {
+        Long userId = UserContextHolder.getCurrentUserId();
+        return personRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Person not found for current user"));
     }
 
+    public Person getProfile() {
+        return getCurrentPerson();
+    }
 
-    public ContactInfo addOrUpdateContact(Long id, ContactInfo contactInfo) {
-        Person person = getProfile(id);
+    public ContactInfo addOrUpdateContact(ContactInfo contactInfo) {
+        Person person = getCurrentPerson();
         person.setContactInfo(contactInfo);
         personRepository.save(person);
         return contactInfo;
     }
 
-    public void removeContact(Long id) {
-        Person person = getProfile(id);
+    public void removeContact() {
+        Person person = getCurrentPerson();
         person.setContactInfo(null);
         personRepository.save(person);
     }
 
-    public Experience addExperience(Long id, Experience experience) {
-        Person person = getProfile(id);
+
+    public Experience addExperience(Experience experience) {
+        Person person = getCurrentPerson();
         experience.setPerson(person);
         return experienceRepository.save(experience);
     }
@@ -53,8 +54,8 @@ public class PersonService {
     }
 
 
-    public Education addEducation(Long id, Education education) {
-        Person person = getProfile(id);
+    public Education addEducation(Education education) {
+        Person person = getCurrentPerson();
         education.setPerson(person);
         return educationRepository.save(education);
     }
@@ -64,71 +65,71 @@ public class PersonService {
     }
 
 
-    public Project addProject(Long id, Project project) {
-        Person person = getProfile(id);
-        project.setPerson(person);
-        return projectRepository.save(project);
+    public Project addProject(Project project) {
+        Person person = getCurrentPerson();
+        person.getProjects().add(project);
+        personRepository.save(person);
+        return project;
     }
 
     public void removeProject(Long projectId) {
-        projectRepository.deleteById(projectId);
+        Person person = getCurrentPerson();
+        person.getProjects().removeIf(p -> p.getId().equals(projectId));
+        personRepository.save(person);
     }
 
-    public Skill addSkill(Long id, Skill skill) {
-        Person person = getProfile(id);
-        skill.setPerson(person);
-        return skillRepository.save(skill);
+
+    public Skill addSkill(Skill skill) {
+        Person person = getCurrentPerson();
+        person.getSkills().add(skill);
+        personRepository.save(person);
+        return skill;
     }
 
     public void removeSkill(Long skillId) {
-        skillRepository.deleteById(skillId);
+        Person person = getCurrentPerson();
+        person.getSkills().removeIf(s -> s.getId().equals(skillId));
+        personRepository.save(person);
     }
 
 
-    public Certification addCertification(Long id, Certification certification) {
-        Person person = getProfile(id);
-        certification.setPerson(person);
-        return certificationRepository.save(certification);
+    public Certification addCertification(Certification certification) {
+        Person person = getCurrentPerson();
+        person.getCertifications().add(certification);
+        personRepository.save(person);
+        return certification;
     }
 
     public void removeCertification(Long certificationId) {
-        certificationRepository.deleteById(certificationId);
+        Person person = getCurrentPerson();
+        person.getCertifications().removeIf(c -> c.getId().equals(certificationId));
+        personRepository.save(person);
     }
 
 
-    public Recommendation addRecommendation(Long id, Recommendation recommendation) {
-        Person person = getProfile(id);
-        recommendation.setPerson(person);
-        return recommendationRepository.save(recommendation);
-    }
-
-    public void removeRecommendation(Long recommendationId) {
-        recommendationRepository.deleteById(recommendationId);
-    }
-
-    public List<Language> addLanguage(Long id, Language language) {
-        Person person = getProfile(id);
+    public List<Language> addLanguage(Language language) {
+        Person person = getCurrentPerson();
         person.getLanguages().add(language);
         personRepository.save(person);
         return person.getLanguages();
     }
 
-    public void removeLanguage(Long id, Language language) {
-        Person person = getProfile(id);
+    public void removeLanguage(Language language) {
+        Person person = getCurrentPerson();
         person.getLanguages().remove(language);
         personRepository.save(person);
     }
 
 
-    public Set<String> addKeyword(Long id, String keyword) {
-        Person person = getProfile(id);
+    public Set<String> addKeyword(String keyword) {
+        Person person = getCurrentPerson();
         person.getTopKeywords().add(keyword);
         personRepository.save(person);
         return person.getTopKeywords();
     }
 
-    public void removeKeyword(Long id, String keyword) {
-        Person person = getProfile(id);
+    public void removeKeyword(String keyword) {
+        Person person = getCurrentPerson();
         person.getTopKeywords().remove(keyword);
         personRepository.save(person);
     }
