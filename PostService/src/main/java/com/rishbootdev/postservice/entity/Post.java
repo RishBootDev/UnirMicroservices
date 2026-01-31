@@ -18,7 +18,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private List<Hiring> hirings;
+   // private List<Hiring> hirings;
 
     @Column(nullable = false)
     private String photoUrl;
