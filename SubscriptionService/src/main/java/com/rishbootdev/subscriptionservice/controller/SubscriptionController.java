@@ -1,6 +1,5 @@
 package com.rishbootdev.subscriptionservice.controller;
 
-
 import com.rishbootdev.subscriptionservice.dto.SubscriptionStatusDto;
 import com.rishbootdev.subscriptionservice.entity.Subscription;
 import com.rishbootdev.subscriptionservice.enums.SubscriptionStatus;
@@ -26,12 +25,12 @@ public class SubscriptionController {
         dto.setUserId(userId);
         if (s == null) {
             dto.setActive(false);
-            dto.setStatus(SubscriptionStatus.ACTIVE);
+            dto.setStatus(null);
             dto.setExpiresAt(null);
         } else {
             boolean active = s.getStatus() == SubscriptionStatus.ACTIVE && s.getExpiresAt().isAfter(java.time.Instant.now());
             dto.setActive(active);
-            dto.setStatus(SubscriptionStatus.ACTIVE);
+            dto.setStatus(s.getStatus());
             dto.setExpiresAt(s.getExpiresAt().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
         }
         return ResponseEntity.ok(dto);
@@ -43,4 +42,3 @@ public class SubscriptionController {
         return ResponseEntity.ok(ok);
     }
 }
-

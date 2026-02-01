@@ -31,7 +31,6 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional
     public JSONObject createOrder(CreateOrderRequest request) throws Exception {
-
         JSONObject options = new JSONObject();
         long amountInPaise = Math.round(request.getAmount() * 100);
 
@@ -89,4 +88,30 @@ public class PaymentServiceImpl implements PaymentService {
         return valid;
     }
 
+    @Override
+    @Transactional
+    public void handleWebhookPayment(String razorpayOrderId, String razorpayPaymentId, String status) throws Exception {
+        if (razorpayOrderId == null || razorpayOrderId.isBlank()) return;
+
+        Payment payment = paymentRepository.findById(razorpayOrderId).orElse(null);
+
+        if (payment == null) {
+           return;
+        }
+
+        payment.setPaymentId(razorpayPaymentId);
+        payment.setSignature(null);
+        if ("captured".equalsIgnoreCase(status) || "authorized".equalsIgnoreCase(status)) {
+            payment.setStatus(PaymentStatus.SUCCESS);
+            payment.setVerifiedAt(Instant.now());
+            paymentRepository.save(payment);
+
+           subscriptionService.createOrExtendSubscription(payment.getUserId(), 30);
+        } else if ("failed".equalsIgnoreCase(status)) {
+            payment.setStatus(PaymentStatus.FAILED);
+            paymentRepository.save(payment);
+        } else {
+           paymentRepository.save(payment);
+        }
+    }
 }

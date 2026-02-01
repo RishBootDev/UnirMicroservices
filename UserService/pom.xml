@@ -6,11 +6,10 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- ✅ Spring Boot (STABLE & Cloud-compatible) -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.6</version>
+        <version>3.4.1</version>
         <relativePath/>
     </parent>
 
@@ -25,7 +24,7 @@
         <spring-cloud.version>2024.0.1</spring-cloud.version>
     </properties>
 
-    <!-- ✅ Spring Cloud BOM (VERY IMPORTANT) -->
+    <!-- ✅ Spring Cloud BOM -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -111,13 +110,21 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
 
-            <!-- Compiler -->
+            <!-- 🧠 Java 21 Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -133,7 +140,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Spring Boot -->
+            <!-- 🚀 Spring Boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
