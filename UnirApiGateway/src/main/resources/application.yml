@@ -5,14 +5,46 @@ spring:
         - id: UserService
           uri: lb://UserService
           predicates:
-            - Path=/api/unir/users/**
+            - Path=/api/unir/auth/**
           filters:
             - StripPrefix=2
 
-        - id: PostService
+        - id: ProfileService_Profile
+          uri: lb://ProfileService
+          predicates:
+            - Path=/api/unir/profile/**
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
+
+        - id: ProfileService_Company
+          uri: lb://ProfileService
+          predicates:
+            - Path=/api/unir/company/**
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
+
+        - id: ProfileService_Education
+          uri: lb://ProfileService
+          predicates:
+            - Path=/api/unir/education/**
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
+
+        - id: PostService_Post
           uri: lb://PostService
           predicates:
-            - Path=/api/unir/posts/**
+            - Path=/api/unir/post/**
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
+
+        - id: PostService_Likes
+          uri: lb://PostService
+          predicates:
+            - Path=/api/unir/likes/**
           filters:
             - StripPrefix=2
             - name: AuthenticationFilter
@@ -24,14 +56,3 @@ spring:
           filters:
             - StripPrefix=2
             - name: AuthenticationFilter
-
-        - id: NODE-SERVICE
-          uri: lb://NODE-SERVICE
-          predicates:
-            - Path=/api/unir/ai-service/api/chat/**
-          filters:
-            - StripPrefix=2
-            - name: AuthenticationFilter
-
-
-
