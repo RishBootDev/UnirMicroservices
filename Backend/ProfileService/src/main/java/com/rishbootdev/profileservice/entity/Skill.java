@@ -23,7 +23,5 @@ public class Skill {
     @Enumerated(EnumType.STRING)
     private ProficiencyLevel proficiency;
 
-    @ManyToOne
-    private Person person;
 }
 

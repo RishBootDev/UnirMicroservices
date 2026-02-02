@@ -6,9 +6,11 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "experiences")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,7 +22,8 @@ public class Experience {
 
     private String title;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
     private LocalDate startDate;
@@ -34,9 +37,16 @@ public class Experience {
     private String description;
 
     @ElementCollection
+    @CollectionTable(
+            name = "experience_technologies",
+            joinColumns = @JoinColumn(name = "experience_id")
+    )
+    @Column(name = "technology")
     private Set<String> technologies;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "person_id", nullable = false)
     private Person person;
 }
+
 
