@@ -9,12 +9,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="EurekaServiceDiscovery" />
         <module name="UnirApiGateway" />
+        <module name="PostsService" />
       </profile>
       <profile name="Annotation profile for UserService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
         </processorPath>
         <module name="UserService" />
@@ -29,28 +31,40 @@
         </processorPath>
         <module name="AdminServer" />
       </profile>
-      <profile name="Annotation profile for PostService" enabled="true">
+      <profile name="Annotation profile for NotificationService" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="ConnectionService" />
+        <module name="NotificationService" />
+      </profile>
+      <profile name="Annotation profile for SubscriptionService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
         </processorPath>
-        <module name="ConnectionService" />
-        <module name="NotificationService" />
-        <module name="ProfileService" />
         <module name="SubscriptionService" />
-        <module name="PostService" />
+        <module name="ProfileService" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ExtraService" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="AdminServer" options="-parameters" />
       <module name="ConnectionService" options="-parameters" />
       <module name="EurekaServiceDiscovery" options="-parameters" />
+      <module name="ExtraService" options="-parameters" />
       <module name="NotificationService" options="-parameters" />
-      <module name="PostService" options="-parameters" />
+      <module name="PostsService" options="-parameters" />
       <module name="ProfileService" options="-parameters" />
       <module name="SubscriptionService" options="-parameters" />
       <module name="UnirApiGateway" options="-parameters" />

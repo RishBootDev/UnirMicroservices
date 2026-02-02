@@ -5,8 +5,9 @@
     <file url="file://$PROJECT_DIR$/ConnectionService/ProfileService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ConnectionService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/EurekaServiceDiscovery/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ExtraService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/NotificationService/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/PostService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/PostsService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ProfileService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/SubscriptionService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UnirApiGateway/src/main/java" charset="UTF-8" />
