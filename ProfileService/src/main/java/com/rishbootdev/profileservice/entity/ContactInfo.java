@@ -23,11 +23,9 @@ public class ContactInfo {
     private String phone;
     private String website;
     private String github;
-    private String stackOverflow;
     private String twitter;
     private String linkedin;
 
-   // private Person person;  // Bidirectional
 
 
 }
