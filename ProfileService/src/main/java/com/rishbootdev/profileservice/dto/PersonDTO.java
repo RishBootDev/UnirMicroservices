@@ -2,8 +2,7 @@ package com.rishbootdev.profileservice.dto;
 
 
 import lombok.*;
-import java.time.LocalDateTime;
-import java.util.*;
+
 
 @Data
 @NoArgsConstructor
@@ -11,6 +10,7 @@ import java.util.*;
 @Builder
 public class PersonDTO {
 
+    private Long userId;
     private String firstName;
     private String lastName;
     private String headline;
@@ -19,19 +19,6 @@ public class PersonDTO {
     private String profileUrl;
     private String profilePictureUrl;
 
-    private ContactInfoDTO contactInfo;
     private String summary;
-
-    private List<ExperienceDTO> experiences;
-    private List<EducationDTO> educations;
-    private List<ProjectDTO> projects;
-    private List<SkillDTO> skills;
-    private List<CertificationDTO> certifications;
-
-    private List<LanguageDTO> languages;
-    private Set<String> topKeywords;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
 

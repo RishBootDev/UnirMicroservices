@@ -1,5 +1,6 @@
 package com.rishbootdev.profileservice.controller;
 
+import com.rishbootdev.profileservice.dto.PersonDTO;
 import com.rishbootdev.profileservice.entity.*;
 import com.rishbootdev.profileservice.service.PersonService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,11 @@ public class PersonController {
     @GetMapping("")
     public ResponseEntity<Person> getProfile() {
         return ResponseEntity.ok(personService.getProfile());
+    }
+
+    @PostMapping("/addPerson")
+    public ResponseEntity<Void> addPersonDetails(@RequestBody PersonDTO personDTO){
+
     }
 
     @PostMapping("/contact")
