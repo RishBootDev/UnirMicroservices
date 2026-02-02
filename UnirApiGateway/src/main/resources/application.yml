@@ -1,6 +1,26 @@
 spring:
+  application:
+    name: UnirApiGateway
+
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - http://localhost:5173
+              - http://localhost:4200
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - Authorization
+              - Content-Type
+            allowCredentials: true
+
       routes:
         - id: UserService
           uri: lb://UserService
@@ -15,7 +35,7 @@ spring:
             - Path=/api/unir/profile/**
           filters:
             - StripPrefix=2
-            - name: AuthenticationFilter
+            - AuthenticationFilter
 
         - id: ProfileService_Company
           uri: lb://ProfileService
@@ -23,7 +43,7 @@ spring:
             - Path=/api/unir/company/**
           filters:
             - StripPrefix=2
-            - name: AuthenticationFilter
+            - AuthenticationFilter
 
         - id: ProfileService_Education
           uri: lb://ProfileService
@@ -31,7 +51,7 @@ spring:
             - Path=/api/unir/education/**
           filters:
             - StripPrefix=2
-            - name: AuthenticationFilter
+            - AuthenticationFilter
 
         - id: PostService_Post
           uri: lb://PostService
@@ -39,7 +59,7 @@ spring:
             - Path=/api/unir/post/**
           filters:
             - StripPrefix=2
-            - name: AuthenticationFilter
+            - AuthenticationFilter
 
         - id: PostService_Likes
           uri: lb://PostService
@@ -47,7 +67,7 @@ spring:
             - Path=/api/unir/likes/**
           filters:
             - StripPrefix=2
-            - name: AuthenticationFilter
+            - AuthenticationFilter
 
         - id: ConnectionsService
           uri: lb://ConnectionsService
@@ -55,4 +75,15 @@ spring:
             - Path=/api/unir/connections/**
           filters:
             - StripPrefix=2
-            - name: AuthenticationFilter
+            - AuthenticationFilter
+
+server:
+  port: 9000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+jwt:
+  secretKey: rishbootdev4787ritulworks48574875nihalbhai985485teenoTabahi548574HagguMaster45747954

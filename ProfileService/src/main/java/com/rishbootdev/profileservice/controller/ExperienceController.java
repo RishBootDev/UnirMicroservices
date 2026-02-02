@@ -1,7 +1,7 @@
 package com.rishbootdev.profileservice.controller;
 
 
-import com.rishbootdev.profileservice.dto.PersonDto;
+import com.rishbootdev.profileservice.dto.PersonDTO;
 import com.rishbootdev.profileservice.service.ExperienceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class ExperienceController {
     private final ExperienceService experienceService;
 
     @GetMapping("/getProfiles/{name}")
-    public ResponseEntity<List<PersonDto>> getPersonsByCompany(@PathVariable String name){
+    public ResponseEntity<List<PersonDTO>> getPersonsByCompany(@PathVariable String name){
         return ResponseEntity.ok(experienceService.byCompanyName(name));
     }
 }

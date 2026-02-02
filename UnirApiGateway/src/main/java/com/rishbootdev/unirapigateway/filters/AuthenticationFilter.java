@@ -24,33 +24,39 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
-            log.info("Login request: {}", exchange.getRequest().getURI());
 
-            final String tokenHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
+            // ✅ Allow preflight requests
+            if (exchange.getRequest().getMethod().name().equals("OPTIONS")) {
+                return chain.filter(exchange);
+            }
 
-            if(tokenHeader == null || !tokenHeader.startsWith("Bearer")) {
+            final String tokenHeader = exchange.getRequest()
+                    .getHeaders()
+                    .getFirst("Authorization");
+
+            if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                log.error("Authorization token header not found");
                 return exchange.getResponse().setComplete();
             }
 
-            final String token = tokenHeader.split("Bearer ")[1];
+            final String token = tokenHeader.substring(7);
 
             try {
                 String userId = jwtService.getUserIdFromToken(token);
-                ServerWebExchange modifiedExchange = exchange
-                        .mutate()
+
+                ServerWebExchange modifiedExchange = exchange.mutate()
                         .request(r -> r.header("X-User-Id", userId))
                         .build();
 
                 return chain.filter(modifiedExchange);
+
             } catch (JwtException e) {
-                log.error("JWT Exception: {}", e.getLocalizedMessage());
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 return exchange.getResponse().setComplete();
             }
         };
     }
+
 
     public static class Config {
     }

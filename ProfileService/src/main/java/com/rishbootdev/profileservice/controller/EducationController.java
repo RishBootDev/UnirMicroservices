@@ -1,7 +1,7 @@
 package com.rishbootdev.profileservice.controller;
 
 
-import com.rishbootdev.profileservice.dto.PersonDto;
+import com.rishbootdev.profileservice.dto.PersonDTO;
 import com.rishbootdev.profileservice.service.EducationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class EducationController {
     private final EducationService educationService;
 
     @GetMapping("/getProfiles/{institute}")
-    public ResponseEntity<List<PersonDto>> getProfilesByEducation(@PathVariable String institute) {
+    public ResponseEntity<List<PersonDTO>> getProfilesByEducation(@PathVariable String institute) {
        return ResponseEntity.ok(educationService.byInstituteName(institute));
     }
 }
