@@ -10,18 +10,18 @@ const httpserver=require('http').createServer(app);
         console.log("Connected");
       });
 
-
+       const  PORT=process.env.PORT;
       const { Eureka } = require("eureka-js-client");
       
       
-      const PORT =process.env.PORT
+     // const PORT =process.env.PORT
       
      
       
       const eurekaClient = new Eureka({
         instance: {
-          app: "node-service",                  
-          instanceId: `node-service:${PORT}`,
+          app: "AISERVICE",
+          instanceId: `AISERVICE:${PORT}`,
           hostName: "localhost",
           ipAddr: "127.0.0.1",
       
@@ -42,7 +42,7 @@ const httpserver=require('http').createServer(app);
         },
         eureka: {
           host: "localhost",
-          port: 8711,
+          port: 8761,
           servicePath: "/eureka/apps/"
         }
       });
@@ -64,8 +64,4 @@ const httpserver=require('http').createServer(app);
           server.close(() => process.exit());
         });
       });
-
-  
-  
-
 

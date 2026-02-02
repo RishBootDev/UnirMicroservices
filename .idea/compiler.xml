@@ -19,7 +19,16 @@
         </processorPath>
         <module name="UserService" />
       </profile>
-      <profile name="Annotation profile for SubscriptionService" enabled="true">
+      <profile name="Annotation profile for AdminServer" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-configuration-processor/3.5.10/spring-boot-configuration-processor-3.5.10.jar" />
+        </processorPath>
+        <module name="AdminServer" />
+      </profile>
+      <profile name="Annotation profile for PostService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -31,15 +40,6 @@
         <module name="ProfileService" />
         <module name="SubscriptionService" />
         <module name="PostService" />
-      </profile>
-      <profile name="Annotation profile for AdminServer" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-configuration-processor/3.5.10/spring-boot-configuration-processor-3.5.10.jar" />
-        </processorPath>
-        <module name="AdminServer" />
       </profile>
     </annotationProcessing>
   </component>
