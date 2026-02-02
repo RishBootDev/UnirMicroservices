@@ -1,10 +1,12 @@
 package com.rishbootdev.profileservice.service;
 
 import com.rishbootdev.profileservice.auth.UserContextHolder;
+import com.rishbootdev.profileservice.dto.PersonDTO;
 import com.rishbootdev.profileservice.entity.*;
 import com.rishbootdev.profileservice.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,7 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final ExperienceRepository experienceRepository;
     private final EducationRepository educationRepository;
+    private final ModelMapper modelMapper;
 
     private Person getCurrentPerson() {
         Long userId = UserContextHolder.getCurrentUserId();
@@ -132,5 +135,12 @@ public class PersonService {
         Person person = getCurrentPerson();
         person.getTopKeywords().remove(keyword);
         personRepository.save(person);
+    }
+
+    public void addPerson(PersonDTO personDTO) {
+
+        Person person = modelMapper.map(personDTO, Person.class);
+        personRepository.save(person);
+
     }
 }

@@ -4,6 +4,8 @@ import com.rishbootdev.profileservice.dto.PersonDTO;
 import com.rishbootdev.profileservice.entity.*;
 import com.rishbootdev.profileservice.service.PersonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,9 @@ public class PersonController {
 
     @PostMapping("/addPerson")
     public ResponseEntity<Void> addPersonDetails(@RequestBody PersonDTO personDTO){
+
+        personService.addPerson(personDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
 
