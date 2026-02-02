@@ -1,6 +1,7 @@
 package com.rishbootdev.profileservice.service;
 
 import com.rishbootdev.profileservice.auth.UserContextHolder;
+import com.rishbootdev.profileservice.client.UserClient;
 import com.rishbootdev.profileservice.dto.PersonDTO;
 import com.rishbootdev.profileservice.entity.*;
 import com.rishbootdev.profileservice.repository.*;
@@ -21,6 +22,7 @@ public class PersonService {
     private final ExperienceRepository experienceRepository;
     private final EducationRepository educationRepository;
     private final ModelMapper modelMapper;
+    private final UserClient userClient;
 
     private Person getCurrentPerson() {
         Long userId = UserContextHolder.getCurrentUserId();
@@ -140,6 +142,7 @@ public class PersonService {
     public void addPerson(PersonDTO personDTO) {
 
         Person person = modelMapper.map(personDTO, Person.class);
+        person.setUserId(userClient.getUserIdFromEmail(person.getEmail()));
         personRepository.save(person);
 
     }
