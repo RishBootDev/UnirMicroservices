@@ -43,6 +43,14 @@ spring:
             - StripPrefix=2
             - AuthenticationFilter
 
+        - id: ProfileService_Institution
+          uri: lb://ProfileService
+          predicates:
+            - Path=/api/unir/institution/**
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter
+
         - id: ProfileService_Education
           uri: lb://ProfileService
           predicates:
