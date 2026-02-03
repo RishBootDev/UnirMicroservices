@@ -4,7 +4,6 @@ import com.rishbootdev.profileservice.dto.PersonDTO;
 import com.rishbootdev.profileservice.entity.*;
 import com.rishbootdev.profileservice.service.PersonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,12 @@ public class PersonController {
     @GetMapping("")
     public ResponseEntity<Person> getProfile() {
         return ResponseEntity.ok(personService.getProfile());
+    }
+
+
+    @RequestMapping("/byName/{name}")
+    public ResponseEntity<List<PersonDTO>> getProfileSByName(String name){
+        return ResponseEntity.ok(personService.getProfileSByName(name));
     }
 
     @PostMapping("/addPerson")

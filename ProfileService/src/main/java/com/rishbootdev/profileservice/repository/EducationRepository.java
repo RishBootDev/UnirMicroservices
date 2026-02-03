@@ -22,4 +22,5 @@ public interface EducationRepository extends JpaRepository<Education, Long> {
     List<Person> findPersonsByInstitutionName(
             @Param("institutionName") String institutionName
     );
+
 }

@@ -146,4 +146,8 @@ public class PersonService {
         personRepository.save(person);
 
     }
+
+    public List<PersonDTO> getProfileSByName(String name) {
+        return null;
+    }
 }

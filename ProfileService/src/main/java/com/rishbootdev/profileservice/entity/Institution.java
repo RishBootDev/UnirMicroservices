@@ -24,5 +24,8 @@ public class Institution {
 
     private String city;
     private String country;
+
+    private String websiteUrl;
+    private String logoUrl;
 }
 
