@@ -10,7 +10,6 @@ import java.time.Year;
 public class EducationDTO {
 
     private InstitutionDTO institution;
-
     private String degree;
     private String fieldOfStudy;
     private Year startYear;
