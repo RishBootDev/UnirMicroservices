@@ -22,8 +22,6 @@ public class PersonDTO {
     private ContactInfoDTO contactInfo;
     private String summary;
 
-    private List<ExperienceDTO> experiences;
-    private List<EducationDTO> educations;
     private List<ProjectDTO> projects;
     private List<SkillDTO> skills;
     private List<CertificationDTO> certifications;

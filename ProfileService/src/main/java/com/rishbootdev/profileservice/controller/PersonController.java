@@ -1,7 +1,6 @@
 package com.rishbootdev.profileservice.controller;
 
-import com.rishbootdev.profileservice.dto.PersonDTO;
-import com.rishbootdev.profileservice.entity.*;
+import com.rishbootdev.profileservice.dto.*;
 import com.rishbootdev.profileservice.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,28 +17,25 @@ public class PersonController {
 
     private final PersonService personService;
 
-    @GetMapping("")
-    public ResponseEntity<Person> getProfile() {
+    @GetMapping
+    public ResponseEntity<PersonDTO> getProfile() {
         return ResponseEntity.ok(personService.getProfile());
     }
 
-
-    @RequestMapping("/byName/{name}")
-    public ResponseEntity<List<PersonDTO>> getProfileSByName(String name){
+    @GetMapping("/byName/{name}")
+    public ResponseEntity<List<PersonDTO>> getProfilesByName(@PathVariable String name) {
         return ResponseEntity.ok(personService.getProfileSByName(name));
     }
 
     @PostMapping("/addPerson")
-    public ResponseEntity<Void> addPersonDetails(@RequestBody PersonDTO personDTO){
-
+    public ResponseEntity<Void> addPersonDetails(@RequestBody PersonDTO personDTO) {
         personService.addPerson(personDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
-
     }
 
     @PostMapping("/contact")
-    public ResponseEntity<ContactInfo> addOrUpdateContact(@RequestBody ContactInfo contactInfo) {
-        return ResponseEntity.ok(personService.addOrUpdateContact(contactInfo));
+    public ResponseEntity<ContactInfoDTO> addOrUpdateContact(@RequestBody ContactInfoDTO dto) {
+        return ResponseEntity.ok(personService.addOrUpdateContact(dto));
     }
 
     @DeleteMapping("/contact")
@@ -49,8 +45,8 @@ public class PersonController {
     }
 
     @PostMapping("/experience")
-    public ResponseEntity<Experience> addExperience(@RequestBody Experience experience) {
-        return ResponseEntity.ok(personService.addExperience(experience));
+    public ResponseEntity<ExperienceDTO> addExperience(@RequestBody ExperienceDTO dto) {
+        return ResponseEntity.ok(personService.addExperience(dto));
     }
 
     @DeleteMapping("/experience/{experienceId}")
@@ -60,8 +56,8 @@ public class PersonController {
     }
 
     @PostMapping("/education")
-    public ResponseEntity<Education> addEducation(@RequestBody Education education) {
-        return ResponseEntity.ok(personService.addEducation(education));
+    public ResponseEntity<EducationDTO> addEducation(@RequestBody EducationDTO dto) {
+        return ResponseEntity.ok(personService.addEducation(dto));
     }
 
     @DeleteMapping("/education/{educationId}")
@@ -71,8 +67,8 @@ public class PersonController {
     }
 
     @PostMapping("/project")
-    public ResponseEntity<Project> addProject(@RequestBody Project project) {
-        return ResponseEntity.ok(personService.addProject(project));
+    public ResponseEntity<ProjectDTO> addProject(@RequestBody ProjectDTO dto) {
+        return ResponseEntity.ok(personService.addProject(dto));
     }
 
     @DeleteMapping("/project/{projectId}")
@@ -82,8 +78,8 @@ public class PersonController {
     }
 
     @PostMapping("/skill")
-    public ResponseEntity<Skill> addSkill(@RequestBody Skill skill) {
-        return ResponseEntity.ok(personService.addSkill(skill));
+    public ResponseEntity<SkillDTO> addSkill(@RequestBody SkillDTO dto) {
+        return ResponseEntity.ok(personService.addSkill(dto));
     }
 
     @DeleteMapping("/skill/{skillId}")
@@ -93,8 +89,8 @@ public class PersonController {
     }
 
     @PostMapping("/certification")
-    public ResponseEntity<Certification> addCertification(@RequestBody Certification certification) {
-        return ResponseEntity.ok(personService.addCertification(certification));
+    public ResponseEntity<CertificationDTO> addCertification(@RequestBody CertificationDTO dto) {
+        return ResponseEntity.ok(personService.addCertification(dto));
     }
 
     @DeleteMapping("/certification/{certificationId}")
@@ -104,13 +100,13 @@ public class PersonController {
     }
 
     @PostMapping("/language")
-    public ResponseEntity<List<Language>> addLanguage(@RequestBody Language language) {
-        return ResponseEntity.ok(personService.addLanguage(language));
+    public ResponseEntity<List<LanguageDTO>> addLanguage(@RequestBody LanguageDTO dto) {
+        return ResponseEntity.ok(personService.addLanguage(dto));
     }
 
     @DeleteMapping("/language")
-    public ResponseEntity<Void> removeLanguage(@RequestBody Language language) {
-        personService.removeLanguage(language);
+    public ResponseEntity<Void> removeLanguage(@RequestBody LanguageDTO dto) {
+        personService.removeLanguage(dto);
         return ResponseEntity.noContent().build();
     }
 
