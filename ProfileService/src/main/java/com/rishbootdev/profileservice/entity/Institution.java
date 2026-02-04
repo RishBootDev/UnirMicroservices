@@ -27,5 +27,6 @@ public class Institution {
 
     private String websiteUrl;
     private String logoUrl;
+
 }
 

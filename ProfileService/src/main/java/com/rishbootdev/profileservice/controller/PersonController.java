@@ -27,10 +27,45 @@ public class PersonController {
         return ResponseEntity.ok(personService.getProfileSByName(name));
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<PersonDTO> getProfileByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(personService.getProfileByUserId(userId));
+    }
+
     @PostMapping("/addPerson")
     public ResponseEntity<Void> addPersonDetails(@RequestBody PersonDTO personDTO) {
         personService.addPerson(personDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/summary")
+    public ResponseEntity<Void> updateSummary(@RequestBody String summary) {
+        personService.updateSummary(summary);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/experiences")
+    public ResponseEntity<Void> setExperiences(@RequestBody List<ExperienceDTO> dtos) {
+        personService.setExperiences(dtos);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/educations")
+    public ResponseEntity<Void> setEducations(@RequestBody List<EducationDTO> dtos) {
+        personService.setEducations(dtos);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/skills-languages")
+    public ResponseEntity<Void> setSkillsAndLanguages(@RequestBody SkillsLanguagesDTO dto) {
+        personService.setSkillsAndLanguages(dto.getSkills(), dto.getLanguages());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/projects-certs")
+    public ResponseEntity<Void> setProjectsAndCertifications(@RequestBody ProjectsCertsDTO dto) {
+        personService.setProjectsAndCertifications(dto.getProjects(), dto.getCertifications());
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/contact")
