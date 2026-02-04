@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.charset.StandardCharsets;
 
 @RestController
-@RequestMapping("/api/webhook")
+@RequestMapping("/webhook")
 @RequiredArgsConstructor
 public class WebhookController {
 

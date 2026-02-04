@@ -12,7 +12,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 @RestController
-@RequestMapping("/api/subscriptions")
+@RequestMapping("/subscriptions")
 @RequiredArgsConstructor
 public class SubscriptionController {
 

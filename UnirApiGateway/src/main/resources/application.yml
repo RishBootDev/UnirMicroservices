@@ -83,6 +83,29 @@ spring:
             - StripPrefix=2
             - AuthenticationFilter
 
+        - id: SubscriptionService_Payments
+          uri: lb://SubscriptionService
+          predicates:
+            - Path=/api/unir/payments/**
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter
+
+        - id: SubscriptionService_Subscriptions
+          uri: lb://SubscriptionService
+          predicates:
+            - Path=/api/unir/subscriptions/**
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter
+
+        - id: SubscriptionService_Webhook
+          uri: lb://SubscriptionService
+          predicates:
+            - Path=/api/unir/webhook/**
+          filters:
+            - StripPrefix=2
+
 server:
   port: 9000
 
