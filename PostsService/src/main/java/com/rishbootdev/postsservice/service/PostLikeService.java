@@ -4,10 +4,9 @@ import com.rishbootdev.postsservice.auth.UserContextHolder;
 import com.rishbootdev.postsservice.entity.Post;
 import com.rishbootdev.postsservice.entity.PostLike;
 import com.rishbootdev.postsservice.event.PostLikedEvent;
-import com.rishbootdev.postsservice.exceptions.BadRequestException;
-import com.rishbootdev.postsservice.exceptions.ResourceNotFoundException;
 import com.rishbootdev.postsservice.repository.PostLikeRepository;
 import com.rishbootdev.postsservice.repository.PostsRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -22,41 +21,65 @@ public class PostLikeService {
     private final PostsRepository postsRepository;
     private final KafkaTemplate<Long, PostLikedEvent> kafkaTemplate;
 
-    public void likePost(Long postId) throws ResourceNotFoundException, BadRequestException {
+    @Transactional
+    public void likePost(Long postId) {
         Long userId = UserContextHolder.getCurrentUserId();
-        log.info("Attempting to like the post with id: {}", postId);
+        if (userId == null) {
+            throw new RuntimeException("Unauthorized");
+        }
 
-        Post post = postsRepository.findById(postId).orElseThrow(
-                () -> new ResourceNotFoundException("Post not found with id: "+postId));
+        Post post = postsRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
 
-        boolean alreadyLiked = postLikeRepository.existsByUserIdAndPostId(userId, postId);
-        if(alreadyLiked) throw new BadRequestException("Cannot like the same post again.");
+        boolean alreadyLiked =
+                postLikeRepository.existsByUserIdAndPostId(userId, postId);
 
-        PostLike postLike = new PostLike();
-        postLike.setPostId(postId);
-        postLike.setUserId(userId);
-        postLikeRepository.save(postLike);
-        log.info("Post with id: {} liked successfully", postId);
+        if (alreadyLiked) {
+            throw new RuntimeException("Cannot like the same post again");
+        }
 
-        PostLikedEvent postLikedEvent = PostLikedEvent.builder()
-                .postId(postId)
-                .likedByUserId(userId)
-                .creatorId(post.getUserId()).build();
+        PostLike like = new PostLike();
+        like.setUserId(userId);
+        like.setPostId(postId);
+        postLikeRepository.save(like);
 
-        kafkaTemplate.send("post-liked-topic", postId, postLikedEvent);
+        // denormalized counter
+        post.setLikeCount(post.getLikeCount() + 1);
+
+        kafkaTemplate.send(
+                "post-liked-topic",
+                postId,
+                PostLikedEvent.builder()
+                        .postId(postId)
+                        .likedByUserId(userId)
+                        .build()
+        );
     }
 
-    public void unlikePost(Long postId) throws ResourceNotFoundException, BadRequestException {
+    @Transactional
+    public void unlikePost(Long postId) {
         Long userId = UserContextHolder.getCurrentUserId();
-        log.info("Attempting to unlike the post with id: {}", postId);
-        boolean exists = postsRepository.existsById(postId);
-        if(!exists) throw new ResourceNotFoundException("Post not found with id: "+postId);
+        if (userId == null) {
+            throw new RuntimeException("Unauthorized");
+        }
 
-        boolean alreadyLiked = postLikeRepository.existsByUserIdAndPostId(userId, postId);
-        if(!alreadyLiked) throw new BadRequestException("Cannot unlike the post which is not liked.");
+        Post post = postsRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        boolean alreadyLiked =
+                postLikeRepository.existsByUserIdAndPostId(userId, postId);
+
+        if (!alreadyLiked) {
+            throw new RuntimeException("Cannot unlike a post you haven't liked");
+        }
 
         postLikeRepository.deleteByUserIdAndPostId(userId, postId);
 
-        log.info("Post with id: {} unliked successfully", postId);
+        // denormalized counter
+        post.setLikeCount(Math.max(0, post.getLikeCount() - 1));
+
+        log.info("Post {} unliked by user {}", postId, userId);
     }
 }
+
+

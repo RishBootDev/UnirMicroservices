@@ -17,5 +17,16 @@ public class KafkaTopicConfig {
     public NewTopic postLikedTopic() {
         return new NewTopic("post-liked-topic", 3, (short) 1);
     }
+
+    @Bean
+    public NewTopic postDeletedTopic() {
+        return new NewTopic("post-deleted-topic", 3, (short) 1);
+    }
+
+    @Bean
+    public NewTopic postCommentedTopic() {
+        return new NewTopic("post-commented-topic", 3, (short) 1);
+    }
 }
+
 

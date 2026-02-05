@@ -1,21 +1,22 @@
 package com.rishbootdev.postsservice.service;
 
 import com.rishbootdev.postsservice.auth.UserContextHolder;
-import com.rishbootdev.postsservice.clients.ConnectionsClient;
 import com.rishbootdev.postsservice.dto.PostCreateRequestDto;
 import com.rishbootdev.postsservice.dto.PostDto;
 import com.rishbootdev.postsservice.entity.Post;
+import com.rishbootdev.postsservice.enums.PostType;
+import com.rishbootdev.postsservice.enums.PostVisibility;
 import com.rishbootdev.postsservice.event.PostCreatedEvent;
-import com.rishbootdev.postsservice.exceptions.ResourceNotFoundException;
+import com.rishbootdev.postsservice.event.PostDeletedEvent;
+import com.rishbootdev.postsservice.repository.PostCommentRepository;
+import com.rishbootdev.postsservice.repository.PostLikeRepository;
 import com.rishbootdev.postsservice.repository.PostsRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,47 +24,75 @@ import java.util.stream.Collectors;
 public class PostsService {
 
     private final PostsRepository postsRepository;
+    private final PostLikeRepository postLikeRepository;
+    private final PostCommentRepository postCommentRepository;
     private final ModelMapper modelMapper;
-    private final ConnectionsClient connectionsClient;
-
     private final KafkaTemplate<Long, PostCreatedEvent> kafkaTemplate;
+    private final KafkaTemplate<Long, PostDeletedEvent> postDeletedKafka;
 
-    public PostDto createPost(PostCreateRequestDto postDto) {
+    public PostDto createPost(PostCreateRequestDto dto) {
         Long userId = UserContextHolder.getCurrentUserId();
-        Post post = modelMapper.map(postDto, Post.class);
+        if (userId == null) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        Post post = modelMapper.map(dto, Post.class);
         post.setUserId(userId);
 
-        Post savedPost = postsRepository.save(post);
+        if (post.getType() == null) post.setType(PostType.NORMAL);
+        if (post.getVisibility() == null) post.setVisibility(PostVisibility.PUBLIC);
 
-        PostCreatedEvent postCreatedEvent = PostCreatedEvent.builder()
-                .postId(savedPost.getId())
-                .creatorId(userId)
-                .content(savedPost.getContent())
-                .build();
+        Post saved = postsRepository.save(post);
 
-        kafkaTemplate.send("post-created-topic", postCreatedEvent);
+        kafkaTemplate.send(
+                "post-created-topic",
+                saved.getId(),
+                PostCreatedEvent.builder()
+                        .postId(saved.getId())
+                        .creatorId(userId)
+                        .build()
+        );
 
-        return modelMapper.map(savedPost, PostDto.class);
+        return modelMapper.map(saved, PostDto.class);
     }
 
-    public PostDto getPostById(Long postId) throws ResourceNotFoundException {
-        log.debug("Retrieving post with ID: {}", postId);
-
-        Post post = postsRepository.findById(postId).orElseThrow(() ->
-                new ResourceNotFoundException("Post not found with id: "+postId));
+    public PostDto getPost(Long id) {
+        Post post = postsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
         return modelMapper.map(post, PostDto.class);
     }
 
-    public List<PostDto> getAllPostsOfUser(Long userId) {
-        List<Post> posts = postsRepository.findByUserId(userId);
+    @Transactional
+    public void deletePost(Long postId) {
+        Long userId = UserContextHolder.getCurrentUserId();
+        if (userId == null) throw new RuntimeException("Unauthorized");
 
-        return posts
-                .stream()
-                .map((element) -> modelMapper.map(element, PostDto.class))
-                .collect(Collectors.toList());
+        Post post = postsRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        if (!post.getUserId().equals(userId)) {
+            throw new RuntimeException("You can delete only your own post");
+        }
+
+
+        postLikeRepository.deleteAllByPostId(postId);
+        postCommentRepository.deleteAllByPostId(postId);
+
+        post.setDeleted(true);
+        post.setContent("[deleted]");
+        post.setMediaUrl(null);
+        post.setLikeCount(0);
+        post.setCommentCount(0);
+
+        log.info("Post {} and all likes/comments deleted", postId);
+
+        postDeletedKafka.send(
+                "post-deleted-topic",
+                postId,
+                PostDeletedEvent.builder()
+                        .postId(postId)
+                        .deletedByUserId(userId)
+                        .build()
+        );
     }
-
-//    public List<Post> getPostsByField(String field){
-//        return postsRepository.getPostsBy(field);
-//    }
 }

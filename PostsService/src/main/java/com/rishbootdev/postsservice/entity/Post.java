@@ -1,34 +1,57 @@
 package com.rishbootdev.postsservice.entity;
 
+import com.rishbootdev.postsservice.enums.PostType;
+import com.rishbootdev.postsservice.enums.PostVisibility;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
+@Table(
+        name = "posts",
+        indexes = {
+                @Index(name = "idx_post_user", columnList = "userId"),
+                @Index(name = "idx_post_created", columnList = "createdAt")
+        }
+)
 @Getter
 @Setter
-@Table(name = "posts")
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   // private List<Hiring> hirings;
+    private Long userId;
 
-    @Column(nullable = false)
-    private String photoUrl;
-
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false)
-    private Long userId;
+    private String mediaUrl;
+
+    private Long originalPostId;
+
+    @Enumerated(EnumType.STRING)
+    private PostType type = PostType.NORMAL;
+
+    @Enumerated(EnumType.STRING)
+    private PostVisibility visibility = PostVisibility.PUBLIC;
+
+    private boolean edited = false;
+    private boolean deleted = false;
+
+    // denormalized counters
+    private long likeCount = 0;
+    private long commentCount = 0;
+    private long repostCount = 0;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

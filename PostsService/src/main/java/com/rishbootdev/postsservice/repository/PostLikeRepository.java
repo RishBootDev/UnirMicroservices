@@ -6,8 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
 
-    boolean existsByUserIdAndPostId(Long userId, Long postId);
+        boolean existsByUserIdAndPostId(Long userId, Long postId);
 
-    @Transactional
-    void deleteByUserIdAndPostId(Long userId, Long postId);
+        @Transactional
+        void deleteByUserIdAndPostId(Long userId, Long postId);
+
+        void deleteAllByPostId(Long postId);
+
 }
