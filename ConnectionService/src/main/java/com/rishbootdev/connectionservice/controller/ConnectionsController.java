@@ -20,6 +20,11 @@ public class ConnectionsController {
         return ResponseEntity.ok(connectionsService.getFirstDegreeConnections());
     }
 
+    @GetMapping("/requests")
+    public ResponseEntity<List<Person>> getIncomingConnectionRequests() {
+        return ResponseEntity.ok(connectionsService.getIncomingConnectionRequests());
+    }
+
     @PostMapping("/request/{userId}")
     public ResponseEntity<Boolean> sendConnectionRequest(@PathVariable Long userId) {
         return ResponseEntity.ok(connectionsService.sendConnectionRequest(userId));
@@ -33,5 +38,11 @@ public class ConnectionsController {
     @PostMapping("/reject/{userId}")
     public ResponseEntity<Boolean> rejectConnectionRequest(@PathVariable Long userId) {
         return ResponseEntity.ok(connectionsService.rejectConnectionRequest(userId));
+    }
+
+    @PostMapping("/internal/sync")
+    public ResponseEntity<Void> syncPerson(@RequestParam Long userId, @RequestParam String name) {
+        connectionsService.syncPerson(userId, name);
+        return ResponseEntity.ok().build();
     }
 }

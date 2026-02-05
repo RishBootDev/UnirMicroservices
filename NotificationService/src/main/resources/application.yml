@@ -1,4 +1,26 @@
+server:
+  port: 9040
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
 spring:
+  application:
+    name: NotificationService
+  datasource:
+    url: jdbc:mysql://localhost:3306/unir_notifications
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
@@ -7,4 +29,5 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json:
-          trusted.packages: com.rishbootdev.*
+          trusted.packages: "*"
+          type.mapping: "com.rishbootdev.connectionservice.event.AcceptConnectionRequestEvent:com.rishbootdev.notificationservice.event.AcceptConnectionsRequestEvent,com.rishbootdev.connectionservice.event.SendConnectionRequestEvent:com.rishbootdev.notificationservice.event.SendConnectionRequestEvent,com.rishbootdev.postsservice.event.PostCreatedEvent:com.rishbootdev.notificationservice.event.PostCreatedEvent,com.rishbootdev.postsservice.event.PostLikedEvent:com.rishbootdev.notificationservice.event.PostLikedEvent"

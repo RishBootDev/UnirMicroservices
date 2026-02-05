@@ -3,13 +3,13 @@ package com.rishbootdev.notificationservice.consumer;
 
 import com.rishbootdev.notificationservice.clients.ConnectionsClient;
 import com.rishbootdev.notificationservice.dto.PersonDto;
+import com.rishbootdev.notificationservice.event.PostCreatedEvent;
+import com.rishbootdev.notificationservice.event.PostLikedEvent;
 import com.rishbootdev.notificationservice.service.SendNotification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import posts_service.events.PostCreatedEvent;
-import posts_service.events.PostLikedEvent;
 
 import java.util.List;
 

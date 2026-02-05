@@ -1,6 +1,9 @@
 package com.rishbootdev.postsservice.service;
 
 import com.rishbootdev.postsservice.auth.UserContextHolder;
+import com.rishbootdev.postsservice.clients.ProfileClient;
+import com.rishbootdev.postsservice.dto.AuthorDto;
+import com.rishbootdev.postsservice.dto.PersonDto;
 import com.rishbootdev.postsservice.dto.PostCreateRequestDto;
 import com.rishbootdev.postsservice.dto.PostDto;
 import com.rishbootdev.postsservice.entity.Post;
@@ -27,10 +30,11 @@ public class PostsService {
     private final PostLikeRepository postLikeRepository;
     private final PostCommentRepository postCommentRepository;
     private final ModelMapper modelMapper;
+    private final ProfileClient profileClient;
     private final KafkaTemplate<Long, PostCreatedEvent> kafkaTemplate;
     private final KafkaTemplate<Long, PostDeletedEvent> postDeletedKafka;
 
-    public PostDto createPost(PostCreateRequestDto dto) {
+    public PostDto createPost(PostDto dto) {
         Long userId = UserContextHolder.getCurrentUserId();
         if (userId == null) {
             throw new RuntimeException("Unauthorized");
@@ -53,13 +57,40 @@ public class PostsService {
                         .build()
         );
 
-        return modelMapper.map(saved, PostDto.class);
+        PostDto responseDto = modelMapper.map(saved, PostDto.class);
+        enrichWithAuthor(responseDto, userId);
+        return responseDto;
     }
 
     public PostDto getPost(Long id) {
         Post post = postsRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
-        return modelMapper.map(post, PostDto.class);
+        PostDto dto = modelMapper.map(post, PostDto.class);
+        enrichWithAuthor(dto, post.getUserId());
+        return dto;
+    }
+
+    public org.springframework.data.domain.Page<PostDto> getUserPosts(Long userId, org.springframework.data.domain.Pageable pageable) {
+        org.springframework.data.domain.Page<Post> postsPage = postsRepository.findByUserIdOrderByCreatedAtDesc(userId, pageable);
+        return postsPage.map(post -> {
+            PostDto dto = modelMapper.map(post, PostDto.class);
+            enrichWithAuthor(dto, post.getUserId());
+            return dto;
+        });
+    }
+
+    private void enrichWithAuthor(PostDto dto, Long userId) {
+        try {
+            PersonDto person = profileClient.getProfileByUserId(userId);
+            dto.setAuthor(new AuthorDto(
+                    person.getUserId(),
+                    person.getFirstName() + " " + person.getLastName(),
+                    person.getHeadline(),
+                    person.getProfilePictureUrl()
+            ));
+        } catch (Exception e) {
+            dto.setAuthor(new AuthorDto(userId, "Unknown User", "Member", ""));
+        }
     }
 
     @Transactional

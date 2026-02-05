@@ -1,8 +1,8 @@
 package com.rishbootdev.notificationservice.consumer;
 
+import com.rishbootdev.notificationservice.event.AcceptConnectionsRequestEvent;
+import com.rishbootdev.notificationservice.event.SendConnectionRequestEvent;
 import com.rishbootdev.notificationservice.service.SendNotification;
-import connections_service.events.AcceptConnectionsRequestEvent;
-import connections_service.events.SendConnectionRequestEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

@@ -1,7 +1,7 @@
 package com.rishbootdev.postsservice.controller;
 
 
-import com.rishbootdev.postsservice.dto.PostCreateRequestDto;
+
 import com.rishbootdev.postsservice.dto.PostDto;
 import com.rishbootdev.postsservice.service.PostsService;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +18,21 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostDto> create(
-            @RequestBody PostCreateRequestDto dto) {
+            @RequestBody PostDto dto) {
         return ResponseEntity.ok(postsService.createPost(dto));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PostDto> get(@PathVariable Long id) {
         return ResponseEntity.ok(postsService.getPost(id));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<org.springframework.data.domain.Page<PostDto>> getUserPosts(
+            @PathVariable Long userId,
+            org.springframework.data.domain.Pageable pageable
+    ) {
+        return ResponseEntity.ok(postsService.getUserPosts(userId, pageable));
     }
 
     @DeleteMapping("/{id}")

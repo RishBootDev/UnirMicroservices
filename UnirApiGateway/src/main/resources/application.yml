@@ -59,24 +59,16 @@ spring:
             - StripPrefix=2
             - AuthenticationFilter
 
-        - id: PostService_Post
-          uri: lb://PostService
+        - id: PostsService
+          uri: lb://PostsService
           predicates:
-            - Path=/api/unir/post/**
+            - Path=/api/unir/posts/**
           filters:
             - StripPrefix=2
             - AuthenticationFilter
 
-        - id: PostService_Likes
-          uri: lb://PostService
-          predicates:
-            - Path=/api/unir/likes/**
-          filters:
-            - StripPrefix=2
-            - AuthenticationFilter
-
-        - id: ConnectionsService
-          uri: lb://ConnectionsService
+        - id: ConnectionService
+          uri: lb://ConnectionService
           predicates:
             - Path=/api/unir/connections/**
           filters:
@@ -95,6 +87,14 @@ spring:
           uri: lb://SubscriptionService
           predicates:
             - Path=/api/unir/subscriptions/**
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter
+
+        - id: NotificationService
+          uri: lb://NotificationService
+          predicates:
+            - Path=/api/unir/notifications/**
           filters:
             - StripPrefix=2
             - AuthenticationFilter

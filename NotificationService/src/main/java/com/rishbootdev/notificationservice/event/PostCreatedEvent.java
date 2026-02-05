@@ -1,4 +1,4 @@
-package posts_service.events;
+package com.rishbootdev.notificationservice.event;
 
 
 import lombok.Data;

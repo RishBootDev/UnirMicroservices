@@ -174,8 +174,8 @@ public class PersonService {
     public List<PersonDTO> getProfileSByName(String name) {
         return personRepository.findAll().stream()
                 .filter(p ->
-                        p.getFirstName().toLowerCase().contains(name.toLowerCase()) ||
-                                p.getLastName().toLowerCase().contains(name.toLowerCase())
+                        (p.getFirstName() != null && p.getFirstName().toLowerCase().contains(name.toLowerCase())) ||
+                                (p.getLastName() != null && p.getLastName().toLowerCase().contains(name.toLowerCase()))
                 )
                 .map(p -> modelMapper.map(p, PersonDTO.class))
                 .toList();

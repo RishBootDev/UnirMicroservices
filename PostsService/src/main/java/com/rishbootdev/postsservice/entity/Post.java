@@ -31,6 +31,7 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(name = "photo_url")
     private String mediaUrl;
 
     private Long originalPostId;

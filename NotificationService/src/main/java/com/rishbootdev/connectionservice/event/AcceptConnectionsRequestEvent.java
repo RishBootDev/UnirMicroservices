@@ -1,4 +1,4 @@
-package connections_service.events;
+package com.rishbootdev.connectionservice.event;
 
 
 import lombok.Data;

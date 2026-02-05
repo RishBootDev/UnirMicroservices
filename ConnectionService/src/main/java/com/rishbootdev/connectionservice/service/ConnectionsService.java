@@ -29,6 +29,13 @@ public class ConnectionsService {
         return connectionRepository.getFirstDegreeConnections(userId);
     }
 
+    public List<Person> getIncomingConnectionRequests() {
+        Long userId = UserContextHolder.getCurrentUserId();
+        log.info("Getting incoming connection requests for user with id: {}", userId);
+
+        return connectionRepository.getIncomingRequests(userId);
+    }
+
     public Boolean sendConnectionRequest(Long receiverId) {
         Long senderId = UserContextHolder.getCurrentUserId();
         log.info("Trying to send connection request, sender: {}, reciever: {}", senderId, receiverId);
@@ -91,5 +98,10 @@ public class ConnectionsService {
 
         connectionRepository.rejectConnectionRequest(senderId, receiverId);
         return true;
+    }
+
+    public void syncPerson(Long userId, String name) {
+        log.info("Syncing person for userId: {} and name: {}", userId, name);
+        connectionRepository.syncPerson(userId, name);
     }
 }
