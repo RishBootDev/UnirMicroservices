@@ -9,6 +9,7 @@ import com.rishbootdev.postsservice.entity.Post;
 import com.rishbootdev.postsservice.repository.PostsRepository;
 import com.rishbootdev.postsservice.auth.UserContextHolder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FeedService {
 
     private final ConnectionsClient connectionsClient;
@@ -29,6 +31,8 @@ public class FeedService {
 
         List<PersonDto> connections = connectionsClient.getFirstConnections();
         List<Long> userIds = new ArrayList<>();
+
+        log.info("the connections are : {}",connections);
 
         if (!connections.isEmpty()) {
             userIds.addAll(connections.stream()
@@ -52,7 +56,7 @@ public class FeedService {
                         pageable
                 );
 
-        return postsPage.map(post -> {
+        Page<PostDto> res = postsPage.map(post -> {
             PostDto dto = modelMapper.map(post, PostDto.class);
             try {
                 PersonDto person = profileClient.getProfileByUserId(post.getUserId());
@@ -67,5 +71,9 @@ public class FeedService {
             }
             return dto;
         });
+
+        log.info("The page is printing {}",res);
+
+        return res;
     }
 }
