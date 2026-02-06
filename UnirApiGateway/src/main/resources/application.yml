@@ -17,6 +17,7 @@ spring:
             allowedHeaders:
               - Authorization
               - Content-Type
+              - X-User-Id
             allowCredentials: true
 
       routes:

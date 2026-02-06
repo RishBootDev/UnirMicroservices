@@ -34,6 +34,7 @@ public class PostsService {
     private final KafkaTemplate<Long, PostCreatedEvent> kafkaTemplate;
     private final KafkaTemplate<Long, PostDeletedEvent> postDeletedKafka;
 
+    @Transactional
     public PostDto createPost(PostDto dto) {
         Long userId = UserContextHolder.getCurrentUserId();
         if (userId == null) {
