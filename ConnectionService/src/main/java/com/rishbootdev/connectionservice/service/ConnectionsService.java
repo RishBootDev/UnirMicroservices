@@ -36,6 +36,12 @@ public class ConnectionsService {
         return connectionRepository.getIncomingRequests(userId);
     }
 
+    public List<Person> getSecondDegreeConnections() {
+        Long userId = UserContextHolder.getCurrentUserId();
+        log.info("Getting second degree connections for user with id: {}", userId);
+        return connectionRepository.getSecondDegreeConnections(userId);
+    }
+
     public Boolean sendConnectionRequest(Long receiverId) {
         Long senderId = UserContextHolder.getCurrentUserId();
         log.info("Trying to send connection request, sender: {}, reciever: {}", senderId, receiverId);

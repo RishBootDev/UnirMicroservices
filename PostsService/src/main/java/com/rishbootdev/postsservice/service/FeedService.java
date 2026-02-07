@@ -26,6 +26,7 @@ public class FeedService {
     private final ProfileClient profileClient;
     private final PostsRepository postsRepository;
     private final ModelMapper modelMapper;
+    private final com.rishbootdev.postsservice.repository.PostLikeRepository postLikeRepository;
 
     public Page<PostDto> getFeed(int page, int size) {
 
@@ -56,8 +57,14 @@ public class FeedService {
                         pageable
                 );
 
-        Page<PostDto> res = postsPage.map(post -> {
+        List<Long> likedPostIds = (currentUserId != null)
+                ? postLikeRepository.findByUserIdAndPostIdIn(currentUserId, postsPage.getContent().stream().map(Post::getId).toList())
+                .stream().map(like -> like.getPostId()).toList()
+                : List.of();
+
+        return postsPage.map(post -> {
             PostDto dto = modelMapper.map(post, PostDto.class);
+            dto.setLikedByCurrentUser(likedPostIds.contains(post.getId()));
             try {
                 PersonDto person = profileClient.getProfileByUserId(post.getUserId());
                 dto.setAuthor(new AuthorDto(
@@ -71,9 +78,5 @@ public class FeedService {
             }
             return dto;
         });
-
-        log.info("The page is printing {}",res);
-
-        return res;
     }
 }

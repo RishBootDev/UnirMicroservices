@@ -19,4 +19,5 @@ public class PostDto {
     private long commentCount;
     private LocalDateTime createdAt;
     private AuthorDto author;
+    private boolean likedByCurrentUser;
 }

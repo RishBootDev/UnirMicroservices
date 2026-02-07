@@ -17,7 +17,7 @@ public class CommentController {
 
     private final PostCommentService commentService;
 
-    @PostMapping("/posts/{postId}/comments")
+    @PostMapping("/{postId}/comments")
     public ResponseEntity<Void> comment(
             @PathVariable Long postId,
             @RequestBody CommentCreateDto dto) {
@@ -25,8 +25,8 @@ public class CommentController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/posts/{postId}/comments")
-    public ResponseEntity<List<PostComment>> getComments(
+    @GetMapping("/{postId}/comments")
+    public ResponseEntity<List<com.rishbootdev.postsservice.dto.CommentDto>> getComments(
             @PathVariable Long postId) {
         return ResponseEntity.ok(commentService.getComments(postId));
     }

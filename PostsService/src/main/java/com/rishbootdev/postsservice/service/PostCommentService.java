@@ -26,6 +26,7 @@ public class PostCommentService {
     private final PostsRepository postsRepository;
     private final ModelMapper modelMapper;
     private final KafkaTemplate<Long, PostCommentedEvent> kafkaTemplate;
+    private final com.rishbootdev.postsservice.clients.ProfileClient profileClient;
 
     @Transactional
     public void addComment(Long postId, CommentCreateDto dto) {
@@ -54,10 +55,25 @@ public class PostCommentService {
         );
     }
 
-    public List<PostComment> getComments(Long postId) {
+    public List<com.rishbootdev.postsservice.dto.CommentDto> getComments(Long postId) {
         return commentRepository.findByPostId(postId)
                 .stream()
                 .filter(c -> !c.isDeleted())
+                .map(comment -> {
+                    com.rishbootdev.postsservice.dto.CommentDto dto = modelMapper.map(comment, com.rishbootdev.postsservice.dto.CommentDto.class);
+                    try {
+                        com.rishbootdev.postsservice.dto.PersonDto person = profileClient.getProfileByUserId(comment.getUserId());
+                        dto.setAuthor(new com.rishbootdev.postsservice.dto.AuthorDto(
+                                person.getUserId(),
+                                person.getFirstName() + " " + person.getLastName(),
+                                person.getHeadline(),
+                                person.getProfilePictureUrl()
+                        ));
+                    } catch (Exception e) {
+                        dto.setAuthor(new com.rishbootdev.postsservice.dto.AuthorDto(comment.getUserId(), "Unknown User", "Member", ""));
+                    }
+                    return dto;
+                })
                 .toList();
     }
 

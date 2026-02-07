@@ -55,4 +55,9 @@ public interface ConnectionRepository extends Neo4jRepository<Person, Long> {
             "ON MATCH SET p.name = $name " +
             "RETURN p")
     Person syncPerson(Long userId, String name);
+
+    @Query("MATCH (p:Person {userId: $userId})-[:CONNECTED_TO]-(friend)-[:CONNECTED_TO]-(fof:Person) " +
+            "WHERE NOT (p)-[:CONNECTED_TO]-(fof) AND p <> fof " +
+            "RETURN DISTINCT fof LIMIT 20")
+    List<Person> getSecondDegreeConnections(Long userId);
 }
